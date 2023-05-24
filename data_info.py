@@ -1,14 +1,12 @@
 import csv
 import requests
-from bs4 import BeautifulSoup
 import re
 import os
 
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from urllib.parse import urlparse, parse_qs
 
-# DEVELOPER_KEY = 'Your API'
+# DEVELOPER_KEY = ''
 YOUTUBE_API_VERSION = 'v3'
 
 # 유튜브 API 클라이언트를 생성
@@ -45,7 +43,7 @@ def api_youtube_info(video_id):
         data = [title, category, description, video_id]
 
         # CSV 파일을 쓰기 모드로 열고 데이터 기록
-        with open('video_info.csv', mode='a', encoding='utf-8', newline='') as file:
+        with open('data/video_info.csv', mode='a', encoding='utf-8', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(data)
             print('CSV 파일에 저장되었습니다.')
@@ -73,25 +71,5 @@ def crawl_youtube_csv(file_path):
             with open(f'{"thumbnail"}/{video_id}.jpg', 'wb') as f:
                 f.write(response.content)
 
-def crawl_youtube_thumbnails_csv(file_path):
-    with open(file_path, newline='', encoding='utf-8') as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            text = row[0]
-            links = extract_youtube_links(text)
 
-
-            for link in links:
-                print(link)
-                response = requests.get(link)
-                html = response.text
-                soup = BeautifulSoup(html, 'html.parser')
-
-                thumbnail_url = f'https://img.youtube.com/vi/{link.split("=")[-1]}/mqdefault.jpg'
-                response = requests.get(thumbnail_url)
-
-                with open(f'{"thumbnail"}/{link.split("=")[-1]}.jpg', 'wb') as f:
-                    f.write(response.content)
-
-#crawl_youtube_thumbnails_csv('yt_link.csv')
-crawl_youtube_csv('yt_link.csv')
+crawl_youtube_csv('data/yt_id.csv')

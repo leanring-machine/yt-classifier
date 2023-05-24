@@ -369,3 +369,5 @@ $RECYCLE.BIN/
 !data/
 data/*
 !data/search_query.csv
+
+thumbnail/*
