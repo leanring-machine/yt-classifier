@@ -5,12 +5,12 @@ import os
 
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from dotenv import load_dotenv
 
-# DEVELOPER_KEY = ''
-YOUTUBE_API_VERSION = 'v3'
+load_dotenv()
 
 # 유튜브 API 클라이언트를 생성
-youtube = build('youtube', YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
+youtube = build('youtube', 'v3', developerKey=os.environ["GOOGLE_DEV_KEY"])
 
 
 def extract_youtube_links(text):
