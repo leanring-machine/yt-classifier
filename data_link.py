@@ -5,7 +5,7 @@ from selenium import webdriver
 from urllib.parse import quote
 
 
-def get_video_links(query):
+def get_video_ids(query):
     driver = webdriver.Chrome()
     # 유튜브 검색 페이지 URL 생성
     query_encoded = quote(query.encode("utf-8"))
@@ -25,7 +25,7 @@ def get_video_links(query):
         last_height = new_height
     html = driver.page_source
     driver.quit()
-    return list(set(re.findall(r"watch\?v=(\S{11})", html)))[:1000]
+    return set(re.findall(r"watch\?v=(\S{11})", html))
 
 
 def save_to_csv(filename, links):
@@ -37,6 +37,8 @@ def save_to_csv(filename, links):
 
 with open("data/search_query.csv", "r") as query_file:
     reader = csv.reader(query_file)
+    result_ids = set()
     for query in reader:
-        links = get_video_links(query[0])
-        save_to_csv("data/yt_id.csv", links)
+        ids = get_video_ids(query[0])
+        result_ids.update(ids)
+    save_to_csv("data/yt_id.csv", result_ids)
