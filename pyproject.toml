@@ -11,6 +11,8 @@ python = "^3.10"
 selenium = "^4.9.1"
 google-api-python-client = "^2.86.0"
 python-dotenv = "^1.0.0"
+jupyterlab = "^4.0.0"
+pandas = "^2.0.2"
 
 
 [build-system]
