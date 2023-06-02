@@ -68,8 +68,6 @@ def api_youtube_info(video_id, info_writer):
         print(f'{video_id} complete')
         return category
     except HttpError as error:
-        print(error.content)
-        print('An HTTP error {} occurred:\n{}'.format(error.resp.status, error.content))
         raise error
     except Exception as e:
         print('-'*10)
@@ -96,9 +94,10 @@ def crawl_youtube_csv(video_ids, resume_path):
                 with open(f'thumbnail/{category}/{vid}.jpg', 'wb') as f:
                     f.write(response.content)
             except HttpError:
-                with open(resume_path, mode='w', encoding='utf-8'):
+                with open(resume_path, mode='w', encoding='utf-8') as resume_file:
                     print(f'API exceed!! Next time it will download info start at ${vid}')
-                    csv.writer(info_file).writerow(vid)
+                    resume_file.write(vid)
+                break
 
 
 ids = get_video_id('data/yt_id.csv', 'data/resume_id')
