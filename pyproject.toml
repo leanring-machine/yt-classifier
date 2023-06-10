@@ -11,8 +11,12 @@ python = "^3.10"
 selenium = "^4.9.1"
 google-api-python-client = "^2.86.0"
 python-dotenv = "^1.0.0"
-jupyterlab = "^4.0.0"
 pandas = "^2.0.2"
+matplotlib = "^3.7.1"
+jupyter = "^1.0.0"
+scikit-learn = "^1.2.2"
+scikit-image = "^0.21.0"
+imageio = "^2.30.0"
 
 
 [build-system]

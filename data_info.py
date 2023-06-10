@@ -1,7 +1,6 @@
 import csv
 import requests
 import os
-import re
 
 import pandas as pd
 from googleapiclient.discovery import build
@@ -65,7 +64,6 @@ def api_youtube_info(video_id, info_writer):
 
         # CSV 파일을 쓰기 모드로 열고 데이터 기록
         info_writer.writerow(data)
-        print(f'{video_id} complete')
         return category
     except HttpError as error:
         raise error
@@ -84,7 +82,7 @@ def crawl_youtube_csv(video_ids, resume_path):
         info_writer = csv.writer(info_file)
         if not os.path.isfile(resume_path):
             info_writer.writerow(['video_id', 'title', 'category'])
-        for vid in video_ids:
+        for idx, vid in enumerate(video_ids):
             try:
                 category = api_youtube_info(vid, info_writer)
                 if not category:
@@ -93,9 +91,10 @@ def crawl_youtube_csv(video_ids, resume_path):
                 response = requests.get(thumbnail_url)
                 with open(f'thumbnail/{category}/{vid}.jpg', 'wb') as f:
                     f.write(response.content)
+                print(f'{vid} complete : {idx + 1} of {len(video_ids)}')
             except HttpError:
+                print(f'API exceed!! Next time it will download info start at ${vid}')
                 with open(resume_path, mode='w', encoding='utf-8') as resume_file:
-                    print(f'API exceed!! Next time it will download info start at ${vid}')
                     resume_file.write(vid)
                 break
 
